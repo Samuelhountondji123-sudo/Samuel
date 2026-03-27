@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samuel</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body { margin:0; font-family:Arial; background:#0D0D0D; color:white; }
+header { padding:15px; text-align:center; color:gold; font-size:24px; }
+.container { padding:10px; }
+.card { background:#1a1a1a; padding:15px; margin:10px 0; border-radius:10px; }
+button { background:gold; border:none; padding:10px; width:100%; margin-top:5px; }
+input { width:100%; padding:10px; margin:5px 0; }
+</style>
+</head>
+<body>
+<header>Samuel</header>
+<div class="container">
+<h3>Ajouter produit</h3>
+<input id="name" placeholder="Nom">
+<input id="price" placeholder="Prix">
+<input id="phone" placeholder="Téléphone">
+<button onclick="addProduct()">Publier</button>
+<h3>Produits</h3>
+<div id="products"></div>
+</div>
+<script>
+let products = JSON.parse(localStorage.getItem("products")) || [];
+function save(){ localStorage.setItem("products", JSON.stringify(products)); }
+function addProduct() {
+  const name=document.getElementById("name").value;
+  const price=document.getElementById("price").value;
+  const phone=document.getElementById("phone").value;
+  if(!name||!price||!phone)return;
+  products.unshift({name,price,phone});
+  save(); display();
+}
+function contact(phone){ window.open("https://wa.me/"+phone); }
+function display(){
+  const container=document.getElementById("products");
+  container.innerHTML="";
+  products.forEach(p=>{
+    container.innerHTML+=`<div class="card"><h3>${p.name}</h3><p>${p.price} FCFA</p><button onclick="contact('${p.phone}')">Acheter</button></div>`;
+  });
+}
+display();
+</script>
+</body>
+</html>
